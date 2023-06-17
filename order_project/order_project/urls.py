@@ -15,14 +15,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.static import serve
+from django.conf import settings
 from . import views as vw
 from rest_framework import routers, urls as r_urls
+from django.conf.urls import url
 
 router = routers.DefaultRouter()
-router.register(r"",vw.OrderView)
+#router.register(r"",vw.OrderView)
+router.register(r"cart",vw.Cart)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("",include(router.urls)),
-    path('auth/', include(r_urls, namespace='rest_framework'))
+    path('', vw.Home.as_view() ,name="home"),
+    path("api/",include(router.urls)),
+    path('auth/', include(r_urls, namespace='rest_framework')),
+
+    url(r'^media/(?P<path>.*)$', serve,{'document_root':settings.MEDIA_ROOT}), 
+    url(r'^static/(?P<path>.*)$', serve,{'document_root':settings.STATIC_ROOT}), 
+
 ]

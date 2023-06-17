@@ -12,6 +12,9 @@ class Products(models.Model):
     updated_at = models.DateTimeField(auto_now = True)
     created_at = models.DateTimeField(auto_now_add= True)
 
+    def __str__(self):
+        return self.name
+
 class ShippingAddress(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     address = models.TextField()
@@ -20,14 +23,34 @@ class ShippingAddress(models.Model):
     country = models.CharField(max_length=50)
     updated_at = models.DateTimeField(auto_now = True)
     created_at = models.DateTimeField(auto_now_add= True)
+    
+    def __str__(self):
+        return self.user.username
 
-class Cart(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
-    product = models.ForeignKey(Products,on_delete=models.CASCADE)
+class ProductCart(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
     updated_at = models.DateTimeField(auto_now = True)
     created_at = models.DateTimeField(auto_now_add= True)
 
+    def __str__(self):
+        return f"{self.product.name}"
+
+class Cart(models.Model):
+    '''This is used to store info into user cart'''
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    product_added = models.ManyToManyField(ProductCart)
+    checked_out = models.BooleanField(default=False)
+    updated_at = models.DateTimeField(auto_now = True)
+    created_at = models.DateTimeField(auto_now_add= True)
+    
+    def __str__(self):
+        return f"{self.user.username}: {self.product_added.all().count()}"
+
+
+
 class Order(models.Model):
+    '''This is used to store order info of user'''
     STATUS_CHOICES = (("PENDING","PENDING"), ("SHIPPED","SHIPPED"), ("DELIVERED","DELIVERED"))
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     shipping_address = models.ForeignKey(ShippingAddress,on_delete=models.CASCADE)
@@ -35,4 +58,16 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now = True)
     created_at = models.DateTimeField(auto_now_add= True)
 
-    
+    def __str__(self):
+        return f"{self.user.username}: {self.status}"
+
+class ProductOrdered(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    updated_at = models.DateTimeField(auto_now = True)
+    created_at = models.DateTimeField(auto_now_add= True)
+
+    def __str__(self):
+        return f"{self.order.user.username}"
