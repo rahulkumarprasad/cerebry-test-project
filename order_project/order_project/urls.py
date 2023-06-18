@@ -22,8 +22,7 @@ from rest_framework import routers, urls as r_urls
 from django.conf.urls import url
 
 router = routers.DefaultRouter()
-#router.register(r"",vw.OrderView)
-router.register(r"cart",vw.Cart)
+router.register(r"cart",vw.CartView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,11 +32,22 @@ urlpatterns = [
     path("logout",vw.user_logout,name="logout"),
     path("login",vw.Login.as_view(), name="login"),
     path("signup",vw.UserCreateView.as_view(), name="signup"),
+    
+    #admin url panel for webpage
     path("products/add",vw.AdminProductAddView.as_view(), name="admin_view"),
     path("products/update",vw.AdminProductListView.as_view(), name="admin_product_list"),
     path("products/update/<int:id>",vw.AdminProductUpdateView.as_view(), name="admin_product_update"),
     path("products/orders",vw.AdminOrderView.as_view(), name="admin_order_view"),
+    path("products/orders/update/<int:id>",vw.AdminOrderUpdateView.as_view(), name="admin_order_update"),
+    
+    #shipping details and cart details
+    path("shipping/add",vw.ShippingCreateView.as_view(), name="add_shipping"),
+    path("cart",vw.CartListView.as_view(), name="cart_list_view"),
+    path("cart/count",vw.CartDetailsCount.as_view(), name="cart_count"),
+    path("order/list",vw.OrderListView.as_view(), name="order_list"),
+    path("order/<int:id>",vw.OrderDetailsView.as_view(), name="order_details"),
 
+    # url to serve static files
     url(r'^static/(?P<path>.*)$', serve,{'document_root':settings.STATIC_ROOT}), 
     url(r'^media/(?P<path>.*)$', serve,{'document_root':settings.MEDIA_ROOT})
 

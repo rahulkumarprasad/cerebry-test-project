@@ -12,7 +12,7 @@
               <h5 class="card-title">{{item.name}}</h5>
               <p class="card-text">{{item.description}}</p>
               <p class="card-text">&#x20B9; {{item.price}}</p>
-              <button class="btn btn-warning" onclick="add_to_cart(event,'{{item.id}}')">Add to cart</button>
+              <button class="btn btn-warning" onclick="add_to_cart(event,'{{item.id}}','1')">Add to cart</button>
             </div>
         </div>
         {%endfor%}
@@ -23,12 +23,5 @@
         {%endif%}
       </div>
   </div>
-
-  <script>
-      function add_to_cart(eve){
-
-      }
-
-  </script>
 
 {%endblock%}

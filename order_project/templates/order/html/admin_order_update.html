@@ -1,0 +1,90 @@
+{%extends 'order/html/admin_base.html' %}
+
+{%block admin_body%}
+
+<div class="container border border-secondary p-4">
+    <form method="POST">
+        <fieldset>
+            {%csrf_token%}
+          <legend>Order-Update Form</legend>
+          {%if error %}
+          <div class="mb-3">
+              <p class="text-danger">{{error}}</p>
+          </div>
+          {%endif%}
+          <div class="col-md-4 mb-3">
+            <label for="username" class="form-label">Order-By</label>
+            <input type="text" id="username" name="username" class="form-control" value="{{order.user.username}}" disabled>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="status" class="form-label">Order Status</label>
+            <select name="status" id="status" class="form-control">
+                {% for st in status%}
+                <option value="{{st.0}}" {%if st.0 == order.status %}selected{%endif%}>{{st.1}}</option>
+                {%endfor%}
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Update Status</button>
+        </fieldset>
+      </form>
+      <div class="row my-2">
+        <div class="col-md-12">
+            <h5 class="text-center">Shipping Details</h5>
+        </div>
+        <div class="col-md-6">
+            <label for="add">Address:</label>
+            <textarea class="form-control" cols="30" rows="4" disabled>{{order.shipping_address.address}}</textarea>
+        </div>
+        <div class="row my-1">
+            <div class="col-md-6 mt-3">
+                <label for="add">City:</label>
+                <input class="form-control" value="{{order.shipping_address.city}}" disabled/>
+            </div>
+            <div class="col-md-6 mt-3">
+                <label for="add">State:</label>
+                <input class="form-control" value="{{order.shipping_address.state}}" disabled/>
+            </div>   
+            <div class="col-md-6 mt-3">
+                <label for="add">Country:</label>
+                <input class="form-control" value="{{order.shipping_address.country}}" disabled/>
+            </div>   
+        </div>
+
+      </div>
+      <div class="col-md-12 mt-4">
+        <h5 class="text-center">Product-Ordered</h5>
+    </div>
+      <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Description</th>
+                </tr>
+            </thead>
+            {%load order_templat%}
+              <tbody>
+                  {%for pr in products_ordered%}
+                <tr>
+                    <th >{{pr.product.name}}</th>
+                    <td >{{pr.quantity}}</td>
+                    <td >{{pr.price}}</td>
+                    <td ><img src="/{%if 'media' not in pr.product.image%}media/{{pr.product.image}}{%else%}{{pr.product.image}}{%endif%}" style="width: 50px!important;height: 50px!important;" alt="{{pr.product.name}}"></td>
+                    <td >{{pr.product.description|minimize_desc}}</td>
+                </tr>
+                    {%endfor%}
+                <tr>
+                    <td colspan="3"></td>
+                    <td >Total:</td>
+                    <td >{{order.total_amount}}</td>
+                </tr>
+              </tbody>
+        </table>
+    </div>
+  </div>
+
+
+{%endblock%}

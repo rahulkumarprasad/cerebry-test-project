@@ -1,0 +1,44 @@
+{%extends 'order/common/base.html' %}
+
+{%block body%}
+
+<div class="container-fluid border border-secondary">
+    <div class="row p-4">
+      <div class="table-responsive">
+          <table class="table">
+              <thead>
+                  <tr>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Total-Product</th>
+                    <th scope="col">Total-Price</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Created</th>
+                  </tr>
+              </thead>
+              {%load order_templat%}
+                <tbody>
+                    {%if orders%}
+                    {%for odr in orders%}
+                  <tr>
+                      <th >{{odr.user.username}}</th>
+                      <td >{{odr.count}}</td>
+                      <td ><a href="{%url 'order_details' odr.id%}">{{odr.total_amount}}</a></td>
+                      <td >{{odr.status}}</td>
+                      <td >{{odr.shipping_address.address|minimize_desc}}</td>
+                      <td >{{odr.created_at}}</td>
+                  </tr>
+                      {%endfor%}
+                      {%else%}
+                  <tr>
+                      <th colspan="7" class="text-center text-danger bg-light" ><h5>Sorry, No Orders</h5></th>
+                  </tr>
+                      {%endif%}
+                </tbody>
+          </table>
+      </div>
+
+    </div>
+</div>
+
+{%endblock%}

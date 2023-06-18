@@ -5,6 +5,7 @@ def product_directory(instance,filename):
     return f"products/{str(instance.name).replace(' ','_')}/{str(filename).replace(' ','_')}"
 
 class Products(models.Model):
+    '''Stores product data'''
     name = models.CharField(max_length = 200)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -16,6 +17,7 @@ class Products(models.Model):
         return self.name
 
 class ShippingAddress(models.Model):
+    '''Store shiping address for user'''
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     address = models.TextField()
     city = models.CharField(max_length=50)
@@ -28,6 +30,7 @@ class ShippingAddress(models.Model):
         return self.user.username
 
 class ProductCart(models.Model):
+    '''Stores product added to cart for user'''
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     updated_at = models.DateTimeField(auto_now = True)
@@ -56,6 +59,7 @@ class Order(models.Model):
     shipping_address = models.ForeignKey(ShippingAddress,on_delete=models.CASCADE)
     status = models.CharField(max_length = 9,choices = STATUS_CHOICES,default="PENDING")
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_type = models.CharField(null=True,blank=True,max_length = 30)
     updated_at = models.DateTimeField(auto_now = True)
     created_at = models.DateTimeField(auto_now_add= True)
 
@@ -63,6 +67,7 @@ class Order(models.Model):
         return f"{self.user.username}: {self.status}"
 
 class ProductOrdered(models.Model):
+    '''This is used for sotring ordered product for a user'''
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Products, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()

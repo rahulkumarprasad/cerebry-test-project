@@ -9,7 +9,7 @@
                 <thead>
                     <tr>
                       <th scope="col">Customer</th>
-                      <th scope="col">Price</th>
+                      <th scope="col">Total-Price</th>
                       <th scope="col">Status</th>
                       <th scope="col">Updated</th>
                       <th scope="col">Created</th>
@@ -26,7 +26,7 @@
                         <td >{{odr.status}}</td>
                         <td >{{odr.updated_at}}</td>
                         <td >{{odr.created_at}}</td>
-                        <td ><a class="btn btn-success" href="{%url 'admin_product_update' pr.id %}">Update Status</a></td>
+                        <td ><a class="btn btn-success" href="{%url 'admin_order_update' odr.id %}">Update Status</a></td>
                     </tr>
                         {%endfor%}
                         {%else%}
