@@ -1,0 +1,44 @@
+{%extends 'order/html/admin_base.html' %}
+
+{%block admin_body%}
+
+  <div class="container-fluid border border-secondary">
+      <div class="row p-4">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                      <th scope="col">Customer</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Updated</th>
+                      <th scope="col">Created</th>
+                      <th scope="col">Update Status</th>
+                    </tr>
+                </thead>
+                {%load order_templat%}
+                  <tbody>
+                      {%if orders%}
+                      {%for odr in orders%}
+                    <tr>
+                        <th >{{odr.user.username}}</th>
+                        <td >{{odr.total_amount}}</td>
+                        <td >{{odr.status}}</td>
+                        <td >{{odr.updated_at}}</td>
+                        <td >{{odr.created_at}}</td>
+                        <td ><a class="btn btn-success" href="{%url 'admin_product_update' pr.id %}">Update Status</a></td>
+                    </tr>
+                        {%endfor%}
+                        {%else%}
+                    <tr>
+                        <th colspan="7" class="text-center text-danger bg-light" ><h5>Sorry, No Orders</h5></th>
+                    </tr>
+                        {%endif%}
+                  </tbody>
+            </table>
+        </div>
+
+      </div>
+  </div>
+
+{%endblock%}

@@ -4,19 +4,11 @@
 
   <div class="container-fluid bg-secondary">
       <div class="row p-4">
-          
-        <div class="card my-3 mx-3" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">&#x20B9; Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              <button class="btn btn-warning" onclick="add_to_cart(event,id)">Add to cart</button>
-            </div>
-        </div>
+        {%if products %}
         {%for item in products%}
         <div class="card my-3 mx-3" style="width: 18rem;">
-            <img src="{{item.image}}" class="card-img-top" alt="{{item.name}}">
-            <div class="card-body">
+            <img class="pb-0 mb-0 card-img-top w-90 h-50" src="/{%if 'media' not in item.image%}media/{{item.image}}{%else%}{{item.image}}{%endif%}" alt="{{item.name}}">
+            <div class="card-body pb-0">
               <h5 class="card-title">{{item.name}}</h5>
               <p class="card-text">{{item.description}}</p>
               <p class="card-text">&#x20B9; {{item.price}}</p>
@@ -24,7 +16,11 @@
             </div>
         </div>
         {%endfor%}
-
+        {%else%}
+        <div class="col-md-12 bg-light">
+          <h5 class="text-danger text-center">Sorry, No Product</h5>
+        </div>
+        {%endif%}
       </div>
   </div>
 

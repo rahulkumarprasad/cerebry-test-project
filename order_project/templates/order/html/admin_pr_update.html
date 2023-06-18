@@ -1,0 +1,25 @@
+{%extends 'order/html/admin_base.html' %}
+
+{%block admin_body%}
+
+  <div class="container-fluid p-5">
+      <div class="container border border-secondary p-4">
+        <form method="POST" enctype="multipart/form-data">
+            {%csrf_token%}
+            {% for field in form %}
+                <div class="col-md-12">
+                    {%if field.errors%}
+                    {%for er in field.errors %}
+                    <p class="text-danger">{{er}}</p>
+                    {%endfor%}
+                    {%endif%}
+                    {{ field.label_tag }} 
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-success mt-5">Update</button>
+          </form>
+      </div>
+  </div>
+
+{%endblock%}

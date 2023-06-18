@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 def product_directory(instance,filename):
-    return f"products/{instance.name}/{filename}"
+    return f"products/{str(instance.name).replace(' ','_')}/{str(filename).replace(' ','_')}"
 
 class Products(models.Model):
     name = models.CharField(max_length = 200)
@@ -38,7 +38,7 @@ class ProductCart(models.Model):
 
 class Cart(models.Model):
     '''This is used to store info into user cart'''
-    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
     product_added = models.ManyToManyField(ProductCart)
     checked_out = models.BooleanField(default=False)
     updated_at = models.DateTimeField(auto_now = True)
@@ -55,6 +55,7 @@ class Order(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     shipping_address = models.ForeignKey(ShippingAddress,on_delete=models.CASCADE)
     status = models.CharField(max_length = 9,choices = STATUS_CHOICES,default="PENDING")
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     updated_at = models.DateTimeField(auto_now = True)
     created_at = models.DateTimeField(auto_now_add= True)
 

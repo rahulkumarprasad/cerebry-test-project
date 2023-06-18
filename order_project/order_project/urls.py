@@ -30,8 +30,15 @@ urlpatterns = [
     path('', vw.Home.as_view() ,name="home"),
     path("api/",include(router.urls)),
     path('auth/', include(r_urls, namespace='rest_framework')),
+    path("logout",vw.user_logout,name="logout"),
+    path("login",vw.Login.as_view(), name="login"),
+    path("signup",vw.UserCreateView.as_view(), name="signup"),
+    path("products/add",vw.AdminProductAddView.as_view(), name="admin_view"),
+    path("products/update",vw.AdminProductListView.as_view(), name="admin_product_list"),
+    path("products/update/<int:id>",vw.AdminProductUpdateView.as_view(), name="admin_product_update"),
+    path("products/orders",vw.AdminOrderView.as_view(), name="admin_order_view"),
 
-    url(r'^media/(?P<path>.*)$', serve,{'document_root':settings.MEDIA_ROOT}), 
     url(r'^static/(?P<path>.*)$', serve,{'document_root':settings.STATIC_ROOT}), 
+    url(r'^media/(?P<path>.*)$', serve,{'document_root':settings.MEDIA_ROOT})
 
 ]

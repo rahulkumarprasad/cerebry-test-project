@@ -134,9 +134,13 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR,"static")
 #STATICFILE_DIRS = [os.path.join(BASE_DIR,"static")]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,"media")
+
+PAGE_SIZE = 50
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly'
+        'rest_framework.permissions.IsAuthenticated'
     ]
 }
